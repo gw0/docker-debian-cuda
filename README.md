@@ -9,12 +9,12 @@ Open source project:
 
 - <i class="fa fa-fw fa-home"></i> home: <http://gw.tnode.com/docker/debian-cuda/>
 - <i class="fa fa-fw fa-github-square"></i> github: <http://github.com/gw0/docker-debian-cuda/>
-- <i class="fa fa-fw fa-laptop"></i> technology: *debian*, *cuda toolkit*
+- <i class="fa fa-fw fa-laptop"></i> technology: *debian*, *cuda toolkit*, *opencl*
 - <i class="fa fa-fw fa-database"></i> docker hub: <http://hub.docker.com/r/gw000/debian-cuda/>
 
 Available tags:
 
-- `7.5.18-2`, `7.5`, `latest` [2016-06-17]: *CUDA Toolkit* <small>(7.5.18-2)</small> + *cuDNN* <small>(4.0.7)</small> ([*Dockerfile*](http://github.com/gw0/docker-debian-cuda/blob/master/Dockerfile))
+- `7.5.18-2`, `7.5`, `latest` [2016-07-20]: *CUDA Toolkit* <small>(7.5.18-2)</small> + *cuDNN* <small>(4.0.7)</small> ([*Dockerfile*](http://github.com/gw0/docker-debian-cuda/blob/master/Dockerfile))
 
 
 Usage
@@ -30,6 +30,44 @@ To utilize your GPUs this Docker image needs access to your `/dev/nvidia*` devic
 
 ```bash
 $ docker run -it --rm $(ls /dev/nvidia* | xargs -I{} echo '--device={}') gw000/debian-cuda
+```
+
+
+Host system
+===========
+
+List of devices that should be present on the host system:
+
+```bash
+$ ll /dev/nvidia*
+crw-rw---- 1 root video 250,   0 Jul 13 15:56 /dev/nvidia-uvm
+crw-rw---- 1 root video 250,   1 Jul 13 15:56 /dev/nvidia-uvm-tools
+crw-rw---- 1 root video 195,   0 Jul 13 15:56 /dev/nvidia0
+crw-rw---- 1 root video 195, 255 Jul 13 15:56 /dev/nvidiactl
+```
+
+In case `/dev/nvidia0` and `/dev/nvidiactl` are not present, ensure the kernel module `nvidia` is automatically loaded, properly configured and optimized, and there is a *udev* rule to create the devices:
+
+```bash
+$ echo 'nvidia' > /etc/modules-load.d/nvidia.conf
+$ cat > /etc/udev/rules.d/70-nvidia.rules << __EOF__
+KERNEL=="nvidia", RUN+="/bin/bash -c '/usr/bin/nvidia-smi -L && /bin/chmod 0660 /dev/nvidia* && /bin/chgrp video /dev/nvidia*'"
+__EOF__
+```
+
+For *OpenCL* support the devices `/dev/nvidia-uvm` and `/dev/nvidia-uvm-tools` are needed. Ensure the kernel module `nvidia-uvm` is automatically loaded, and add a custom *udev* rule to create the device:
+
+```bash
+$ echo 'nvidia-uvm' > /etc/modules-load.d/nvidia-uvm.conf
+$ cat > /etc/udev/rules.d/70-nvidia-uvm.rules << __EOF__
+KERNEL=="nvidia_uvm", RUN+="/bin/bash -c '/usr/bin/nvidia-modprobe -c0 -u && /bin/chmod 0660 /dev/nvidia-uvm* && /bin/chgrp video /dev/nvidia-uvm*'"
+__EOF__
+```
+
+If you would like to monitor real-time temperatures on your host system use something like:
+
+```bash
+$ watch -n 5 'nvidia-smi; echo; sensors; for hdd in /dev/sd?; do echo -n "$hdd  "; smartctl -A $hdd | grep Temperature_Celsius; done'
 ```
 
 

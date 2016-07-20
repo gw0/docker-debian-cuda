@@ -15,6 +15,9 @@ RUN apt-get update -qq \
     # install cuda toolkit
     nvidia-cuda-toolkit \
     nvidia-smi \
+    # install cuda opencl
+    nvidia-opencl-icd \
+    #nvidia-opencl-dev \
  && apt-get install --no-install-recommends -y --allow-unauthenticated \
     # install cudnn
     libcudnn4 \
