@@ -14,7 +14,8 @@ Open source project:
 
 Available tags:
 
-- `7.5.18-4_5.1.3_361.45.18-2`, `7.5_5.1`, `latest` [2016-09-19]: *CUDA Toolkit* <small>(7.5.18-4)</small> + *cuDNN* <small>(5.1.3)</small> + *CUDA library* <small>(361.45.18-2)</small> ([*Dockerfile*](http://github.com/gw0/docker-debian-cuda/blob/master/Dockerfile))
+- `8.0.44-2_5.1.5-1_375.20-4`, `8.0_5.1`, `latest` [2016-12-21]: *CUDA Toolkit* <small>(8.0.44-2)</small> + *cuDNN* <small>(5.1.5-1)</small> + *CUDA library* <small>(375.20-4)</small> ([*Dockerfile*](http://github.com/gw0/docker-debian-cuda/blob/master/Dockerfile))
+- `7.5.18-4_5.1.3_361.45.18-2`, `7.5_5.1` [2016-09-19]: *CUDA Toolkit* <small>(7.5.18-4)</small> + *cuDNN* <small>(5.1.3)</small> + *CUDA library* <small>(361.45.18-2)</small> ([*Dockerfile*](http://github.com/gw0/docker-debian-cuda/blob/master/Dockerfile))
 - `7.5.18-2` [2016-07-20]: *CUDA Toolkit* <small>(7.5.18-2)</small> + *cuDNN* <small>(4.0.7)</small> + *CUDA library* <small>(352.79-8)</small>
 
 
@@ -71,7 +72,7 @@ If you would like to monitor real-time temperatures on your host system use some
 $ watch -n 5 'nvidia-smi; echo; sensors; for hdd in /dev/sd?; do echo -n "$hdd  "; smartctl -A $hdd | grep Temperature_Celsius; done'
 ```
 
-In case your Nvidia kernel driver and CUDA library versions differ (exact error in `dmesg`), you may inject the correct version of CUDA library from the host with:
+In case your Nvidia kernel driver and CUDA library versions differ (an error appears in kernel messages `dmesg`), you may inject the correct version of CUDA library from the host with:
 
 ```bash
 $ docker run -it --rm $(ls /dev/nvidia* | xargs -I{} echo '--device={}') $(ls /usr/lib/x86_64-linux-gnu/libcuda.* | xargs -I{} echo '-v {}:{}:ro') gw000/debian-cuda
