@@ -72,7 +72,11 @@ If you would like to monitor real-time temperatures on your host system use some
 $ watch -n 5 'nvidia-smi; echo; sensors; for hdd in /dev/sd?; do echo -n "$hdd  "; smartctl -A $hdd | grep Temperature_Celsius; done'
 ```
 
-In case your Nvidia kernel driver and CUDA library versions differ (an error appears in kernel messages `dmesg`), you may inject the correct version of CUDA library from the host with:
+In case your Nvidia kernel driver and CUDA library versions differ an error appears in kernel messages (`dmesg`) or using `nvidia-smi` inside the container. Possible solutions:
+
+- upgrade your Nvidia kernel driver on the host directly from *Debian 9* packages: [nvidia-kernel-dkms](https://packages.debian.org/stretch/amd64/nvidia-kernel-dkms), [nvidia-alternative](https://packages.debian.org/stretch/amd64/nvidia-alternative), [libnvidia-ml1](https://packages.debian.org/stretch/amd64/libnvidia-ml1), [nvidia-smi](https://packages.debian.org/stretch/amd64/nvidia-smi)
+- upgrade your Nvidia kernel driver on the host by compiling it yourself
+- inject the correct version of CUDA library into the container (if it is installed on the host) with:
 
 ```bash
 $ docker run -it --rm $(ls /dev/nvidia* | xargs -I{} echo '--device={}') $(ls /usr/lib/x86_64-linux-gnu/libcuda.* | xargs -I{} echo '-v {}:{}:ro') gw000/debian-cuda
