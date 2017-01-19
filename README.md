@@ -79,9 +79,8 @@ In case your Nvidia kernel driver and CUDA library versions differ an error appe
 - inject the correct version of CUDA library into the container (if it is installed on the host) with:
 
 ```bash
-$ docker run -it --rm $(ls /dev/nvidia* | xargs -I{} echo '--device={}') $(ls /usr/lib/x86_64-linux-gnu/libcuda.* | xargs -I{} echo '-v {}:{}:ro') gw000/debian-cuda
+$ docker run -it --rm $(ls /dev/nvidia* | xargs -I{} echo '--device={}') $(ls /usr/lib/x86_64-linux-gnu/{libcuda,libnvidia}* | xargs -I{} echo '-v {}:{}:ro') gw000/debian-cuda
 ```
-
 
 Feedback
 ========
