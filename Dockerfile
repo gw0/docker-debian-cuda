@@ -1,4 +1,4 @@
-# docker-debian-cuda - Debian 9 with CUDA Toolkit 7.5 and cuDNN 5.1
+# docker-debian-cuda - Debian 9 with CUDA Toolkit 8.0 and cuDNN 5.1
 
 FROM debian:stretch
 MAINTAINER gw0 [http://gw.tnode.com/] <gw.2017@ena.one>
@@ -12,7 +12,7 @@ RUN apt-get update -qq \
  && apt-get install --no-install-recommends -y \
     # install essentials
     wget \
-    # install cuda toolkit 7.5
+    # install cuda toolkit
     nvidia-cuda-toolkit \
     nvidia-smi \
     # install cuda opencl
@@ -22,12 +22,11 @@ RUN apt-get update -qq \
  && rm -rf /var/lib/apt/lists/*
 
 # install manually
-RUN wget -nv -P /root/debs http://developer.download.nvidia.com/compute/redist/cudnn/v5.1/libcudnn5_5.1.5-1+cuda8.0_amd64.deb \
- && wget -nv -P /root/debs http://developer.download.nvidia.com/compute/redist/cudnn/v5.1/libcudnn5-dev_5.1.5-1+cuda8.0_amd64.deb \
- && echo "2e71330c74262c097caa598df2f32903cb4ffe3b2aeea8decd4e7ae06994e3b0  /root/debs/libcudnn5_5.1.5-1+cuda8.0_amd64.deb" | sha256sum -c --strict - \
- && echo "9db2cbbc80aea6bad82f64728c2b6922eb2c1dc21d6ec7348fc758d1fe4312cd  /root/debs/libcudnn5-dev_5.1.5-1+cuda8.0_amd64.deb" | sha256sum -c --strict - \
+RUN wget -nv -P /root/debs http://developer.download.nvidia.com/compute/redist/cudnn/v5.1/libcudnn5_5.1.10-1+cuda8.0_amd64.deb \
+ && wget -nv -P /root/debs http://developer.download.nvidia.com/compute/redist/cudnn/v5.1/libcudnn5-dev_5.1.10-1+cuda8.0_amd64.deb \
+ && echo "9c9ad582594817ea25489e8a98e9dd31df9dc5d2aab6987c80e1a18eb3478be9  /root/debs/libcudnn5_5.1.10-1+cuda8.0_amd64.deb" | sha256sum -c --strict - \
+ && echo "249184e3f51f0abbc84e41f5a5c95dcde29d7ee445d07b5d9a3f57f95571518b  /root/debs/libcudnn5-dev_5.1.10-1+cuda8.0_amd64.deb" | sha256sum -c --strict - \
     # install cudnn 5.1
- && dpkg -i /root/debs/libcudnn5_5.1.5-1+cuda8.0_amd64.deb \
- && dpkg -i /root/debs/libcudnn5-dev_5.1.5-1+cuda8.0_amd64.deb \
+ && dpkg -i /root/debs/libcudnn5_5.1.10-1+cuda8.0_amd64.deb \
+ && dpkg -i /root/debs/libcudnn5-dev_5.1.10-1+cuda8.0_amd64.deb \
  && rm -rf /root/debs
-
