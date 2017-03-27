@@ -26,7 +26,7 @@ Usage
 Host system requirements (eg. Debian 8 or 9):
 
 - CUDA-capable GPU
-- *nvidia-kernel-dkms* <small>(same as CUDA library)</small>
+- *nvidia-kernel-dkms* <small>(same as CUDA library, see below for a workaround)</small>
 - optionally *nvidia-cuda-mps*, *nvidia-smi*
 
 To utilize your GPUs this Docker image needs access to your `/dev/nvidia*` devices, like:
