@@ -14,7 +14,8 @@ Open source project:
 
 Available tags (based on *Debian 9/stretch* packages):
 
-- `8.0.44-3_5.1.10-1_375.39-1`, `8.0_5.1`, `latest` [2017-03-27]: *CUDA Toolkit* <small>(8.0.44-3)</small> + *cuDNN* <small>(5.1.10-1)</small> + *CUDA library* <small>(375.39-1)</small> ([*Dockerfile*](http://github.com/gw0/docker-debian-cuda/blob/master/Dockerfile))
+- `8.0.44-3_5.1.10-1_375.66-1`, `8.0_5.1`, `latest` [2017-05-31]: *CUDA Toolkit* <small>(8.0.44-3)</small> + *cuDNN* <small>(5.1.10-1)</small> + *CUDA library* <small>(375.66-1)</small> ([*Dockerfile*](http://github.com/gw0/docker-debian-cuda/blob/master/Dockerfile))
+- `8.0.44-3_5.1.10-1_375.39-1` [2017-03-27]: *CUDA Toolkit* <small>(8.0.44-3)</small> + *cuDNN* <small>(5.1.10-1)</small> + *CUDA library* <small>(375.39-1)</small>
 - `8.0.44-2_5.1.5-1_375.20-4` [2016-12-21]: *CUDA Toolkit* <small>(8.0.44-2)</small> + *cuDNN* <small>(5.1.5-1)</small> + *CUDA library* <small>(375.20-4)</small>
 - `7.5.18-4_5.1.3_361.45.18-2`, `7.5_5.1` [2016-09-19]: *CUDA Toolkit* <small>(7.5.18-4)</small> + *cuDNN* <small>(5.1.3)</small> + *CUDA library* <small>(361.45.18-2)</small>
 - `7.5.18-2` [2016-07-20]: *CUDA Toolkit* <small>(7.5.18-2)</small> + *cuDNN* <small>(4.0.7)</small> + *CUDA library* <small>(352.79-8)</small>
@@ -26,13 +27,13 @@ Usage
 Host system requirements (eg. Debian 8 or 9):
 
 - CUDA-capable GPU
-- *nvidia-kernel-dkms* <small>(same as CUDA library, see below for a workaround)</small>
-- optionally *nvidia-cuda-mps*, *nvidia-smi*
+- *nvidia-kernel-dkms* <small>(same as CUDA library, see below for workarounds)</small>
+- optionally *nvidia-cuda-mps*, *nvidia-smi*, *libcupti-dev*
 
-To utilize your GPUs this Docker image needs access to your `/dev/nvidia*` devices, like:
+To utilize your GPUs this Docker image needs access to your `/dev/nvidia*` devices and you would probably like to inject the correct version of CUDA library, like:
 
 ```bash
-$ docker run -it --rm $(ls /dev/nvidia* | xargs -I{} echo '--device={}') gw000/debian-cuda
+$ docker run -it --rm $(ls /dev/nvidia* | xargs -I{} echo '--device={}') $(ls /usr/lib/x86_64-linux-gnu/{libcuda,libnvidia}* | xargs -I{} echo '-v {}:{}:ro') gw000/debian-cuda
 ```
 
 
@@ -77,11 +78,8 @@ In case your Nvidia kernel driver and CUDA library versions differ an error appe
 
 - upgrade your Nvidia kernel driver on the host directly from *Debian 9* packages: [nvidia-kernel-dkms](https://packages.debian.org/stretch/amd64/nvidia-kernel-dkms), [nvidia-alternative](https://packages.debian.org/stretch/amd64/nvidia-alternative), [libnvidia-ml1](https://packages.debian.org/stretch/amd64/libnvidia-ml1), [nvidia-smi](https://packages.debian.org/stretch/amd64/nvidia-smi)
 - upgrade your Nvidia kernel driver on the host by compiling it yourself
-- inject the correct version of CUDA library into the container (if it is installed on the host) with:
+- inject the correct version of CUDA library into the container as mentioned above (if it is installed on the host)
 
-```bash
-$ docker run -it --rm $(ls /dev/nvidia* | xargs -I{} echo '--device={}') $(ls /usr/lib/x86_64-linux-gnu/{libcuda,libnvidia}* | xargs -I{} echo '-v {}:{}:ro') gw000/debian-cuda
-```
 
 Feedback
 ========
