@@ -3,7 +3,7 @@ docker-debian-cuda
 
 ***docker-debian-cuda*** is a minimal [*Docker*](http://www.docker.com/) image built from *Debian 9* (amd64) with [*CUDA Toolkit*](http://developer.nvidia.com/cuda-toolkit) and *cuDNN* using only Debian packages.
 
-Although the *nvidia-docker* tool can run CUDA inside Docker images, it uses yet another wrapper command and is based on Ubuntu images. To make the whole process more transparent, we explicitly expose GPU devices and build from official Debian images. All installations are performed through the Debian package manager, also because the official Nvidia CUDA Toolkit does not support Debian without hacks.
+Although the vendor specific *nvidia-docker* tool can run CUDA inside Docker images, it performs the same thing in a less transparent way and is incompatible with other Docker tools. Instead of using yet another wrapper command, we explicitly expose GPU devices, CUDA libraries, and build from official Debian images. The image build is using the Debian package manager, also for Nvidia CUDA Toolkit.
 
 Open source project:
 
@@ -35,6 +35,8 @@ To utilize your GPUs this Docker image needs access to your `/dev/nvidia*` devic
 ```bash
 $ docker run -it --rm $(ls /dev/nvidia* | xargs -I{} echo '--device={}') $(ls /usr/lib/x86_64-linux-gnu/{libcuda,libnvidia}* | xargs -I{} echo '-v {}:{}:ro') gw000/debian-cuda
 ```
+
+Additional parameters in above commands explicitly expose your GPU devices and CUDA libraries from the host system into the container. The vendor specific *nvidia-docker* tool performs the same thing in a less transparent way and is incompatible with other Docker tools.
 
 
 Host system
@@ -79,6 +81,25 @@ In case your Nvidia kernel driver and CUDA library versions differ an error appe
 - upgrade your Nvidia kernel driver on the host directly from *Debian 9* packages: [nvidia-kernel-dkms](https://packages.debian.org/stretch/amd64/nvidia-kernel-dkms), [nvidia-alternative](https://packages.debian.org/stretch/amd64/nvidia-alternative), [libnvidia-ml1](https://packages.debian.org/stretch/amd64/libnvidia-ml1), [nvidia-smi](https://packages.debian.org/stretch/amd64/nvidia-smi)
 - upgrade your Nvidia kernel driver on the host by compiling it yourself
 - inject the correct version of CUDA library into the container as mentioned above (if it is installed on the host)
+
+
+Decision against *nvidia-docker*
+--------------------------------
+
+It is true, that Nvidia recommends to use their `nvidia-docker` command as part of their vendor lock-in strategy. In reality the `nvidia-docker` is nothing more than a fancy wrapper that runs the `docker` command with the additional parameters to mount the device and host libraries into the container.
+
+Pros for *nvidia-docker* tool:
+
+- shorter command (no need to remember those additional parameters)
+
+Cons for *nvidia-docker* tool:
+
+- yet another tool that administrators need to learn (why bother administrators to learn anything more than `docker run`?)
+- less transparent what is being executed (some believe some "black magic" happens behind `nvidia-docker` that handles 2 instances on same GPU better, although it works exactly the same)
+- not possible to use with `docker-compose` and other tools for managing Docker containers
+- only Nvidia GPUs are supported (what if someone would want to use a GPU from another vendor? or a FPGA device?)
+- no support for OpenCL
+- vendor lock-in
 
 
 Feedback
