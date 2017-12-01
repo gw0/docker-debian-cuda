@@ -14,7 +14,8 @@ Open source project:
 
 Available tags (based on *Debian 9/stretch* packages):
 
-- `8.0.44-3_5.1.10-1_375.66-1`, `8.0_5.1`, `latest` [2017-05-31]: *CUDA Toolkit* <small>(8.0.44-3)</small> + *cuDNN* <small>(5.1.10-1)</small> + *CUDA library* <small>(375.66-1)</small> ([*Dockerfile*](http://github.com/gw0/docker-debian-cuda/blob/master/Dockerfile))
+- `8.0.44-4_6.0.21-1_375.82-1`, `8.0_6.0`, `8.0.44-4_7.0.4.31-1_375.82-1`, `8.0_7.0`, `latest` [2017-12-01]: *CUDA Toolkit* <small>(8.0.44-4)</small> + *cuDNN* <small>(6.0.21-1/7.0.4.31-1)</small> + *CUDA library* <small>(375.82-1)</small> ([*Dockerfile*](http://github.com/gw0/docker-debian-cuda/blob/master/Dockerfile))
+- `8.0.44-3_5.1.10-1_375.66-1`, `8.0_5.1` [2017-05-31]: *CUDA Toolkit* <small>(8.0.44-3)</small> + *cuDNN* <small>(5.1.10-1)</small> + *CUDA library* <small>(375.66-1)</small> ([*Dockerfile*](http://github.com/gw0/docker-debian-cuda/blob/master/Dockerfile))
 - `8.0.44-3_5.1.10-1_375.39-1` [2017-03-27]: *CUDA Toolkit* <small>(8.0.44-3)</small> + *cuDNN* <small>(5.1.10-1)</small> + *CUDA library* <small>(375.39-1)</small>
 - `8.0.44-2_5.1.5-1_375.20-4` [2016-12-21]: *CUDA Toolkit* <small>(8.0.44-2)</small> + *cuDNN* <small>(5.1.5-1)</small> + *CUDA library* <small>(375.20-4)</small>
 - `7.5.18-4_5.1.3_361.45.18-2`, `7.5_5.1` [2016-09-19]: *CUDA Toolkit* <small>(7.5.18-4)</small> + *cuDNN* <small>(5.1.3)</small> + *CUDA library* <small>(361.45.18-2)</small>
