@@ -1,7 +1,7 @@
 # docker-debian-cuda - Debian 9 with CUDA Toolkit 8.0 and cuDNN 6.0/7.0
 
 FROM debian:stretch
-MAINTAINER gw0 [http://gw.tnode.com/] <gw.2017@ena.one>
+MAINTAINER gw0 [http://gw.tnode.com/] <gw.2018@ena.one>
 
 # install from debian repositories
 ENV DEBIAN_FRONTEND noninteractive
