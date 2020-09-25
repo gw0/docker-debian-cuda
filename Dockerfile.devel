@@ -1,5 +1,5 @@
 
-FROM debian-cuda:10.0-buster-runtime AS runtime
+FROM dmattli/debian-cuda:10.0-buster-runtime AS runtime
 MAINTAINER dmm <dmm@mattli.us>
 
 RUN apt-get update && apt-get install -y --no-install-recommends \
