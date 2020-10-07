@@ -3,7 +3,6 @@
 FROM debian:buster
 MAINTAINER gw0 [http://gw.tnode.com/] <gw.2018@ena.one>
 
-# install from debian repositories
 ENV DEBIAN_FRONTEND noninteractive
 RUN apt-get update -qq \
  && apt-get install --no-install-recommends -y \
@@ -11,8 +10,6 @@ RUN apt-get update -qq \
     gnupg2 \
     wget \
     ca-certificates \
-    gcc-7 \
-    g++-7 \
  && apt-get clean \
  && rm -rf /var/lib/apt/lists/*
 
@@ -27,15 +24,21 @@ RUN wget -nv -P /root/manual https://developer.download.nvidia.com/compute/cuda/
 RUN apt-get update -qq \
  && apt-get install --no-install-recommends -y \
     # install cuda toolkit
-    cuda-toolkit-10-0 \
+    cuda-libraries-10-0 \
+    cuda-npp-10-0 \
+# Add libnpp when cuda version > 10
+#   libnpp-11-0
+    cuda-nvtx-10-0 \
+    libcublas10 \
+    libnccl2 \
     # install cudnn
-    libcudnn7-dev=7.6.3.30-1+cuda10.1 \
     libcudnn7=7.6.3.30-1+cuda10.1 \
+ && apt-mark hold libcublas10 \
  && apt-get clean \
  && rm -rf /var/lib/apt/lists/*
 
 # fix issues with shared objects
-RUN ls /usr/local/cuda-10.0/targets/x86_64-linux/lib/stubs/* | xargs -I{} ln -s {} /usr/lib/x86_64-linux-gnu/ \
+RUN ls /usr/local/cuda-10.0/targets/x86_64-linux/lib/* | xargs -I{} ln -s {} /usr/lib/x86_64-linux-gnu/ \
  && ln -s libcuda.so /usr/lib/x86_64-linux-gnu/libcuda.so.1 \
  && ln -s libnvidia-ml.so /usr/lib/x86_64-linux-gnu/libnvidia-ml.so.1
 
