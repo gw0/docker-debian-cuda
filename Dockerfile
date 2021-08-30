@@ -14,7 +14,8 @@ RUN apt-get update -qq \
  && rm -rf /var/lib/apt/lists/*
 
 # install from nvidia repositories
-RUN wget -nv -P /root/manual https://developer.download.nvidia.com/compute/cuda/repos/ubuntu1804/x86_64/7fa2af80.pub \
+RUN echo "Acquire::By-Hash \"no\"; ">/etc/apt/apt.conf.d/01byhash \
+ && wget -nv -P /root/manual https://developer.download.nvidia.com/compute/cuda/repos/ubuntu1804/x86_64/7fa2af80.pub \
  && echo "47217c49dcb9e47a8728b354450f694c9898cd4a126173044a69b1e9ac0fba96  /root/manual/7fa2af80.pub" | sha256sum -c --strict - \
  && apt-key add /root/manual/7fa2af80.pub \
  && wget -nv -P /root/manual https://developer.download.nvidia.com/compute/cuda/repos/ubuntu1804/x86_64/cuda-repo-ubuntu1804_10.1.243-1_amd64.deb \
